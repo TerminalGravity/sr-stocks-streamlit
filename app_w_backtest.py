@@ -157,7 +157,7 @@ if stock_symbol and support_levels and resistance_levels:
     st.bokeh_chart(p, use_container_width=True)
 
     # Backtesting
-    st.subheader("Backtesting Results")
+    st.sidebar.subheader("Backtesting Results")
     final_balance, trades = backtest_levels(stock_symbol, support_levels, resistance_levels)
     net_profit = final_balance - 10000
     win_trades = [trade for trade in trades if trade.get('profit', 0) > 0]
@@ -167,13 +167,18 @@ if stock_symbol and support_levels and resistance_levels:
     max_drawdown = np.min([trade.get('profit', 0) for trade in trades]) if trades else 0
     sharpe_ratio = np.mean([trade.get('profit', 0) for trade in trades]) / np.std([trade.get('profit', 0) for trade in trades]) if len(trades) > 1 else 0
 
-    st.write(f"Initial Balance: $10000")
-    st.write(f"Final Balance: ${final_balance:.2f}")
-    st.write(f"Net Profit: ${net_profit:.2f}")
-    st.write(f"Win Rate: {win_rate:.2%}")
-    st.write(f"Average Profit per Trade: ${avg_profit:.2f}")
-    st.write(f"Maximum Drawdown: ${max_drawdown:.2f}")
-    st.write(f"Sharpe Ratio: {sharpe_ratio:.2f}")
+    st.sidebar.write(f"Initial Balance: $10000")
+    st.sidebar.write(f"Final Balance: ${final_balance:.2f}")
+    st.sidebar.write(f"Net Profit: ${net_profit:.2f}")
+    st.sidebar.write(f"Win Rate: {win_rate:.2%}")
+    st.sidebar.write(f"Average Profit per Trade: ${avg_profit:.2f}")
+    st.sidebar.write(f"Maximum Drawdown: ${max_drawdown:.2f}")
+    st.sidebar.write(f"Sharpe Ratio: {sharpe_ratio:.2f}")
+
+    # Display trades
+    st.sidebar.write("Trade History:")
+    trade_df = pd.DataFrame(trades)
+    st.sidebar.write(trade_df)
 
     # Display trades
     st.write("Trade History:")
@@ -189,3 +194,4 @@ if stock_symbol and support_levels and resistance_levels:
     st.download_button(label="Download Chart as PNG", data=buffer, file_name=f"{stock_symbol}_chart.png", mime="image/png")
 else:
     st.warning("Please enter a valid stock symbol and support/resistance levels.")
+
