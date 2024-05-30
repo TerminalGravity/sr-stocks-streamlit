@@ -54,7 +54,7 @@ def fetch_data(symbol, interval):
         '1D': tradeapi.TimeFrame.Day
     }[interval]
 
-    bars = api.get_bars(symbol, timeframe, start=start_date_str, end=end_date_str, feed='iex').df
+    bars = api.get_bars(symbol, timeframe, start=start_date_str, end=end_date_str).df
     bars.reset_index(inplace=True)
     return bars
 
